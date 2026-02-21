@@ -1,0 +1,6 @@
+.venv/
+.ipynb*
+data/**
+notebooks/.ipynb*
+notebooks/spark-warehouse
+notebooks/.Trash*
