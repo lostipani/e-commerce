@@ -1,8 +1,11 @@
-* Fetch [my spark project](https://github.com/lostipani/spark) and launch a containerised Spark cluster:
-```bash
-docker compose up
-```
-* Once running launch the jupyter notebook on the spark-master node
-```bash
-docker exec -it e-commerce-spark-master-1 bash -c "jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --notebook-dir=/app"
-```
+# e-commerce analysis and modeling on Spark
+
+This repo runs [my spark project](https://github.com/lostipani/spark) but
+adapted such that the master node runs a jupyter notebook.
+
+## How to
+1. Download the dataset from [this kaggle page](https://www.kaggle.com/datasets/carrie1/ecommerce-data/data).
+2. Unzip it in the `data/` folder.
+2. Set up the Spark cluster `docker compose up -d`.
+3. Browse to `http://127.0.0.1:8888/tree/notebooks`.
+
