@@ -43,6 +43,7 @@ FROM spark-base as pyspark
 COPY spark/spark-defaults.conf "$SPARK_HOME/conf"
 RUN chmod u+x /opt/spark/sbin/* && \
     chmod u+x /opt/spark/bin/*
+EXPOSE 7077 8080 8888
 
 # set up jupyter notebook
 RUN mkdir -p /app/data /app/notebooks
@@ -50,14 +51,5 @@ RUN mkdir -p /app/data /app/notebooks
 # set up the entrypoint
 COPY spark/entrypoint.sh .
 RUN chmod 777 ./entrypoint.sh
-
-EXPOSE 7077 8080 8888
-
-# run as non root
-# this is in conflict with mounting local folders with different ownership
-# uncomment to enable:
-# RUN useradd -m -s /bin/bash spark && \
-#     chown -R spark:spark /opt/spark /app /opt/hadoop
-# USER spark
 
 ENTRYPOINT ["./entrypoint.sh"]

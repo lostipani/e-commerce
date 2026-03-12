@@ -1,7 +1,6 @@
 # e-commerce analysis and modeling on Spark
 
-This repo runs [my spark project](https://github.com/lostipani/spark) but
-adapted such that the master node runs a jupyter notebook.
+This repo runs [my spark project](https://github.com/lostipani/spark) but adapted such that the master node runs a jupyter notebook.
 
 ## How to
 1. Download the dataset from [this kaggle page](https://www.kaggle.com/datasets/carrie1/ecommerce-data/data).
