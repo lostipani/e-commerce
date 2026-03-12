@@ -1,4 +1,9 @@
-pandas
-pyarrow
-numpy
-pyspark
+pandas==3.0.1
+pyarrow==23.0.1
+numpy==2.4.2
+pyspark==3.5.5
+matplotlib==3.10.8
+scikit-learn==1.8.0
+jupyter==1.1.1
+notebook==7.5.3
+seaborn==0.13.2

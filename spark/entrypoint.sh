@@ -6,7 +6,10 @@ echo "SPARK_WORKLOAD: $SPARK_WORKLOAD"
 
 if [ "$SPARK_WORKLOAD" == "master" ];
 then
-  start-master.sh -p 7077
+  start-master.sh -p 7077 & \
+  jupyter notebook \
+  --ip=0.0.0.0 --port=8888 --no-browser --allow-root \
+  --NotebookApp.token='' --notebook-dir='/app'
 elif [ "$SPARK_WORKLOAD" == "worker" ];
 then
   start-worker.sh spark://spark-master:7077
