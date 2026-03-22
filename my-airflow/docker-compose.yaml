@@ -3,12 +3,16 @@ x-airflow-common: &airflow-common
   build: .
   image: my-airflow:3.1.8
   environment: &airflow-common-env
+    _AIRFLOW_DB_MIGRATE: 'true'
+    _AIRFLOW_WWW_USER_USERNAME: airflow
+    _AIRFLOW_WWW_USER_PASSWORD: airflow
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     AIRFLOW__CONN_SPARK_DEFAULT: 'spark://spark-master:7077'
@@ -17,7 +21,7 @@ x-airflow-common: &airflow-common
     - ./logs:/opt/airflow/logs
     - ./config:/opt/airflow/config
     - ./plugins:/opt/airflow/plugins
-  user: "${AIRFLOW_UID:-50000}:0"
+  user: "1000:0"
   networks:
     - airflow-spark
   depends_on: &airflow-common-depends-on
@@ -88,15 +92,11 @@ services:
       - -c
       - |
         mkdir -p /sources/logs /sources/dags /sources/plugins
-        chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
+        chown -R "1000:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
     environment:
       <<: *airflow-common-env
-      _AIRFLOW_DB_MIGRATE: 'true'
-      _AIRFLOW_WWW_USER_CREATE: 'true'
-      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_WWW_USER:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_WWW_PASSWORD:-airflow}
-    user: "0:0"
+    user: "1000:0"
     volumes:
       - .:/sources
 
