@@ -15,7 +15,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*do
 
 # set python env
-COPY spark/requirements.txt .
+COPY my-spark/requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # set env variables
@@ -40,7 +40,7 @@ RUN wget https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK
 
 # set up Spark
 FROM spark-base as pyspark
-COPY spark/spark-defaults.conf "$SPARK_HOME/conf"
+COPY my-spark/spark-defaults.conf "$SPARK_HOME/conf"
 RUN chmod u+x /opt/spark/sbin/* && \
     chmod u+x /opt/spark/bin/*
 EXPOSE 7077 8080 8888
@@ -49,7 +49,7 @@ EXPOSE 7077 8080 8888
 RUN mkdir -p /app/data /app/notebooks
 
 # set up the entrypoint
-COPY spark/entrypoint.sh .
+COPY my-spark/entrypoint.sh .
 RUN chmod 777 ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]

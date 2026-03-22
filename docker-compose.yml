@@ -1,14 +1,17 @@
+include:
+  - my-airflow/docker-compose.yaml
 services:
   spark-master:
+    profiles: [ "notebook", "cluster" ]
     build:
       context: .
-      dockerfile: spark/Dockerfile
-    image: spark-master:3.5.5
+      dockerfile: my-spark/Dockerfile
+    image: my-spark:3.5.5
     environment:
       - SPARK_VERSION=3.5.5
     entrypoint: [ './entrypoint.sh', 'master' ]
     networks:
-      - local-network
+      - airflow-spark
     volumes:
       - spark-logs:/opt/spark/spark-events
       - ./data:/app/data
@@ -24,15 +27,16 @@ services:
       retries: 3
 
   spark-worker:
+    profiles: [ "notebook", "cluster" ]
     build:
       context: .
-      dockerfile: spark/Dockerfile
-    image: spark-worker:3.5.5
+      dockerfile: my-spark/Dockerfile
+    image: my-spark:3.5.5
     environment:
       - SPARK_VERSION=3.5.5
     entrypoint: [ './entrypoint.sh', 'worker' ]
     networks:
-      - local-network
+      - airflow-spark
     volumes:
       - spark-logs:/opt/spark/spark-events
     depends_on:
@@ -40,8 +44,10 @@ services:
         condition: service_healthy
 
 networks:
-  local-network:
+  airflow-spark:
     driver: bridge
 
 volumes:
   spark-logs:
+
+
