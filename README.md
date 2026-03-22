@@ -22,13 +22,6 @@ The architecture chosen here is the distributed one but simplified, in which the
 
 The metadata are persisted to a PostgreSQL instance and Redis serves as the Celery backend.
 
-Run 
-```bash
-export AIRFLOW_UID=$(id -u)
-export AIRFLOW_WWW_USER_USERNAME=airflow
-export AIRFLOW_WWW_USER_PASSWORD=airflow
-export AIRFLOW_PROJ_DIR=./airflow/
-```
 Launch
 ```bash
 docker compose --project-directory airflow up --build
@@ -38,4 +31,4 @@ docker compose --project-directory airflow up --build
 |            | python | java | spark | pyspark | airflow |
 |------------|--------|------|-------|---------|---------|
 | my-spark   | 3.12   | 11   | 3.5.5 | 3.5.5   | /       |
-| my-airflow | 3.12   | 17   | 3.5.5 | 3.5.5   | 2.9.2   |
+| my-airflow | 3.12   | 17   | 3.5.5 | 3.5.5   | 3.1.8   |
