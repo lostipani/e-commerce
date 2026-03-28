@@ -43,11 +43,30 @@ services:
       spark-master:
         condition: service_healthy
 
+  s3:
+    profiles: [ "cluster", "storage" ]
+    build:
+      context: .
+      dockerfile: my-s3/Dockerfile
+    image: my-s3:2.2.0
+    environment:
+      - RUST_LOG=garage=info
+    networks:
+      - airflow-spark
+    volumes:
+      - garage_meta:/var/lib/garage/meta
+      - garage_data:/var/lib/garage/data
+    ports:
+      - '3900:3900'
+      - '3901:3901'
+      - '3902:3902'
+      - '3903:3903'
+
 networks:
   airflow-spark:
     driver: bridge
 
 volumes:
   spark-logs:
-
-
+  garage_meta:
+  garage_data:
